@@ -17,5 +17,33 @@ namespace UdemyEFCore.CodeFirst.DAL
             DbContextInitializer.Build();
             optionsBuilder.UseSqlServer(DbContextInitializer.Configuration.GetConnectionString("SqlCon"));
         }
+
+        #region FluentAPI
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+
+        //    modelBuilder.Entity<Product>().HasKey(x => x.Id);
+        //}
+        #endregion
+
+
+        //public override int SaveChanges()
+        //{
+        //    //Track edilen tüm datalara ulaşma
+        //    ChangeTracker.Entries().ToList().ForEach(e =>
+        //    {
+        //        //Track edilen datalar içinde product türünde olanları yakalama
+        //        if (e.Entity is Product p)
+        //        {
+        //            if (e.State == EntityState.Added)
+        //            {
+        //                p.CreateDate = DateTime.Now;
+        //            }
+        //        }
+        //    });
+        //    return base.SaveChanges();
+        //}
+
     }
+
 }
