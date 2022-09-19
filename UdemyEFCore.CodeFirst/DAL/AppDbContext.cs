@@ -12,6 +12,10 @@ namespace UdemyEFCore.CodeFirst.DAL
     {
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             DbContextInitializer.Build();
@@ -19,14 +23,32 @@ namespace UdemyEFCore.CodeFirst.DAL
         }
 
         #region FluentAPI
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
 
-        //    modelBuilder.Entity<Product>().HasKey(x => x.Id);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            //One to Many
+
+            //    modelBuilder.Entity<Category>().HasMany(x => x.Products).WithOne(x => x.Category).HasForeignKey(x => x.Category_Id);
+
+            //One to One
+
+            //modelBuilder.Entity<Product>().HasOne(x => x.ProductFeature).WithOne(x => x.Product).HasForeignKey<ProductFeature>(x => x.Id);
+
+            //Many to Many
+
+            //modelBuilder.Entity<Student>()
+            //    .HasMany(x => x.Teachers)
+            //    .WithMany(x => x.Students)
+            //    .UsingEntity<Dictionary<string, object>>(
+            //    "StudentTeacherManyToMany",
+            //    x => x.HasOne<Teacher>().WithMany().HasForeignKey("TeacherId").HasConstraintName("FK_TeacherId"),
+            //       x => x.HasOne<Student>().WithMany().HasForeignKey("StudentId").HasConstraintName("FK_StudentId")
+            //    );
+
+        }
+ 
         #endregion
-
-
         //public override int SaveChanges()
         //{
         //    //Track edilen tüm datalara ulaşma

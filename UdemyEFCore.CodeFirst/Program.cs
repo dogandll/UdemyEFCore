@@ -77,5 +77,23 @@ using (var _context = new AppDbContext())
     ////Şartı sağlayan listesyi döner
     //var product3 =await _context.Products.Where(x => x.Id == 1 && x.Name == "kalem10" || x.Stock > 1).ToListAsync();
     #endregion
+
+    #region NavigationInsert
+    #region Simple1
+    //var category = new Category() { Name = "Kalemler" };
+
+    //var product = new Product { Name = "Kalem 1", Price = 100, Stock = 200, Barcode = 123, Category = category };
+    //_context.Products.Add(product);
+    #endregion
+    #region Simple2
+
+    var category = _context.Categories.First(x => x.Name == "Defterler");
+    var product = new Product { Name = "Defter 3", Price = 100, Stock = 100, Barcode = 123, CategoryId = category.Id };
+    _context.Add(product);
+    _context.SaveChanges();
+    Console.WriteLine("Veritabanına kayıt edildi");
+    #endregion
+
+    #endregion
 }
 
