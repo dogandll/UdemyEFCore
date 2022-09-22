@@ -159,9 +159,41 @@ using (var _context = new AppDbContext())
     //Console.WriteLine("Veritabanına kayıt edildi.");
     #endregion
     #region DatabaseGenerated Attributed
-    _context.Products.Add(new() { Name = "Kalem 1", Price = 100, Stock = 200, Barcode = 123, Kdv = 18 });
-    _context.SaveChanges();
-    Console.WriteLine("Eklendi");
+    //_context.Products.Add(new() { Name = "Kalem 1", Price = 100, Stock = 200, Barcode = 123, Kdv = 18 });
+    //_context.SaveChanges();
+    //Console.WriteLine("Eklendi");
+    #endregion
+    #region  EagerLoading
+    //Navigation propertyler sayesinde include yaparak ilgili entitylere ulasilmasi
+    //var product = _context.Products.Include(x => x.ProductFeature).Include(x => x.Category).First();
+    //Console.WriteLine("İşlem Bitti");
+    #endregion
+    #region ExplicitLoading
+    #region Sample1
+    //Bire çok durumlarda collection category bağlı tüm product çekilme işlemi için collection metot kullanılır. Load denilerek de yüklenmesi sağlanır.
+
+    //var category = _context.Categories.First();
+
+    //_context.Entry(category).Collection(x => x.Products).Load();
+
+    //category.Products.ForEach(x =>
+    //{
+    //    Console.WriteLine(x.Name);
+    //});
+    #endregion
+    #region Sample2
+    //Birebir ilişkide referans kullanılır.
+    //var product = _context.Products.First();
+    //_context.productFeatures.Where(x => x.Id == product.Id);
+    //_context.Entry(product).Reference(x => x.ProductFeature).Load();
+    #endregion
+    #endregion
+    #region LazyLoading
+    //microsoft.entityframeworkcore.proxies kütüphanesi yüklenmesi gerekmektedir. Mapp entityler virtual olarak işaretlenir
+    //UseLazyLoadingProxies dbcontext içerisine eklenir.
+    //var category = await _context.Categories.FirstAsync();
+    //Console.WriteLine("Categori Çekildi -------------------");
+    //var product = category.Products;
     #endregion
 }
 

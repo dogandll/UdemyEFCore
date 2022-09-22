@@ -24,8 +24,8 @@ namespace UdemyEFCore.CodeFirst.DAL
         public int? CategoryId { get; set; }
 
         //Navigation Property
-        public Category? Category { get; set; }
-        public ProductFeature ProductFeature { get; set; }
+        public virtual Category? Category { get; set; }
+        public virtual ProductFeature ProductFeature { get; set; }
 
     }
 }
