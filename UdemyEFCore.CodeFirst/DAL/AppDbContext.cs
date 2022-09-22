@@ -16,14 +16,32 @@ namespace UdemyEFCore.CodeFirst.DAL
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
 
+        //TPH(Table-Per-Hierachy)
+
+        //Base class dbset edildiği zaman  miras alan tabloları birlştirmektedir.
+        //Aşağıdaki durumda persons tablosu oluşturup Discriminator sutünu oluşturarak manager ve employees ayrımını sağlamaktadır.
+
+        //public DbSet<BasePerson> Persons { get; set; }
+
+        //Base tablo dbset edilmediği zaman ortak olan özellikler ile miras alan sınıflar için ayrı tablo oluşturmaktadır.
+
+        //TPT (Table - Per - Type)
+
+        // AppDbcontext altında onmodelcreating metot çağıralarak set edilecek sıınıflar için tablo ismi verilmektedir.
+        //Her miras alan tablo için içerisinde bulunan property'e göre tablo sutün oluşturmaktadır.
+        //Base class da ise ortak olanları birleştirerek tek tablo yapmaktadır.
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<ProductFull> ProductFulls { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             DbContextInitializer.Build();
-            optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information).UseLazyLoadingProxies().UseSqlServer(DbContextInitializer.Configuration.GetConnectionString("SqlCon"));
+            //LazyLoading ve Console Log Kapatıldı
+            //optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information).UseLazyLoadingProxies().UseSqlServer(DbContextInitializer.Configuration.GetConnectionString("SqlCon"));
+            optionsBuilder.UseSqlServer(DbContextInitializer.Configuration.GetConnectionString("SqlCon"));
         }
-
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region FluentAPI
@@ -65,6 +83,20 @@ namespace UdemyEFCore.CodeFirst.DAL
             //modelBuilder.Entity<Product>().Property(x => x.PriceKdv).ValueGeneratedOnAdd(); //identity
             //modelBuilder.Entity<Product>().Property(x => x.PriceKdv).ValueGeneratedOnAddOrUpdate(); //computed
             //modelBuilder.Entity<Product>().Property(x => x.PriceKdv).ValueGeneratedNever(); //none
+            #endregion
+            #region TBT(Table - Per - Type)
+            //modelBuilder.Entity<BasePerson>().ToTable("Persons");
+            //modelBuilder.Entity<Employee>().ToTable("Employees");
+            //modelBuilder.Entity<Manager>().ToTable("Managers");
+            #endregion
+            #region OwnedEntityType
+            //Inheritance sınıflar için miras alma yerine navigation property gibi child sınıfları tanımladıktan sonra lat taraftaki tanım gerçekleşerek db yansıması gerçekleşmektedir.
+            //modelBuilder.Entity<Manager>().OwnsOne(x => x.Person);
+            #endregion
+            #region KeylessEntity
+            //SQL sorgusunu EFCORE üzerinde kullanmak için oluşturulan sorgunun birebir aynı entity oluşturulur.
+            //ProductFull entity oluşturulduktan sonra [Keyless] attribute kullanılmaz ise aşagidaki fluentAPI komutu kullanılır.
+            modelBuilder.Entity<ProductFull>().HasNoKey();
             #endregion
         }
 

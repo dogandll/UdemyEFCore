@@ -195,5 +195,18 @@ using (var _context = new AppDbContext())
     //Console.WriteLine("Categori Çekildi -------------------");
     //var product = category.Products;
     #endregion
+    #region Keyless EntityTypes
+//    var productsFull = _context.ProductFulls.FromSqlRaw(@"Select 
+//p.Id,
+//C.name,
+//p.name,
+//p.price,
+//pf.height
+//from products p
+//Join productFeatures pf on p.Id=pf.Id
+//Join Categories c on p.CategoryId=c.Id").ToList();
+//    Console.WriteLine("İşlem Bitti");
+    #endregion
+
 }
 
